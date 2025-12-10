@@ -1,121 +1,152 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
-    <title>Запись на консультацию</title>
-    <style>
-        body { font-family: Arial; max-width: 600px; margin: 0 auto; padding: 20px; }
-        h1 { color: #2c3e50; }
-        .form-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 5px; }
-        input { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; }
-        input[readonly] { background: #f5f5f5; color: #666; }
-        .btn { background: #3498db; color: white; padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer; }
-        .btn:hover { background: #2980b9; }
-        .error { color: #e74c3c; font-size: 14px; margin-top: 5px; }
-        .text-danger { color: #e74c3c; }
-        .info-message { background: #d1ecf1; color: #0c5460; padding: 10px; border-radius: 4px; margin-bottom: 15px; }
-        .small-text { font-size: 12px; color: #666; margin-top: 3px; }
-        .form-note { font-size: 13px; color: #7f8c8d; font-style: italic; }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Запись на консультацию - РТУ МИРЭА</title>
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/registration.css') }}">
 </head>
 <body>
-    <h1> Запись на консультацию</h1>
-    
-    @if(Auth::check())
-        <div class="info-message">
-            ✅ Вы авторизованы как <strong>{{ Auth::user()->email }}</strong>. Email будет автоматически использован для записи.
-        </div>
-    @endif
-    
-    <h3>{{ $consultation->title }}</h3>
-    <p><strong>Время:</strong> 
-        @if($consultation->start_time instanceof \Carbon\Carbon)
-            {{ $consultation->start_time->format('d.m.Y H:i') }}
-        @else
-            {{ date('d.m.Y H:i', strtotime($consultation->start_time)) }}
-        @endif
-    </p>
-    <p><strong>Осталось мест:</strong> {{ $consultation->availableSlots() }}</p>
-    
-    @if ($errors->any())
-        <div class="error">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-    
-    <form method="POST" action="/registration" id="registrationForm">
-        @csrf
-        <input type="hidden" name="consultation_id" value="{{ $consultation->id }}">
+    <div class="registration-container">
+        <header class="registration-header">
+            <img src="{{ asset('img/MIREA_Gerb_Colour.png') }}" 
+                 alt="Герб РТУ МИРЭА" 
+                 class="logo"
+                 onerror="this.src='https://via.placeholder.com/70x70/2c3e50/ffffff?text=MIREA'">
+            <div class="registration-header-content">
+                <h1>Запись на консультацию</h1>
+                <p class="subtitle">Система записи на консультации РТУ МИРЭА</p>
+            </div>
+        </header>
         
-        <div class="form-group">
-            <label>Имя *</label>
-            <input type="text" name="first_name" 
-                   value="{{ old('first_name', $userData['first_name'] ?? '') }}" 
-                   pattern="[a-zA-Zа-яА-ЯёЁ\s\-]+"
-                   title="Только буквы, пробелы и дефисы"
-                   required>
-            <div class="small-text">Только буквы, пробелы и дефисы</div>
-            @error('first_name') <div class="text-danger">{{ $message }}</div> @enderror
-        </div>
-        
-        <div class="form-group">
-            <label>Фамилия *</label>
-            <input type="text" name="last_name" 
-                   value="{{ old('last_name', $userData['last_name'] ?? '') }}" 
-                   pattern="[a-zA-Zа-яА-ЯёЁ\s\-]+"
-                   title="Только буквы, пробелы и дефисы"
-                   required>
-            <div class="small-text">Только буквы, пробелы и дефисы</div>
-            @error('last_name') <div class="text-danger">{{ $message }}</div> @enderror
-        </div>
-        
-        <div class="form-group">
-            <label>Email *</label>
-            @if(Auth::check())
-                <input type="email" name="email" value="{{ Auth::user()->email }}" readonly required>
-                <small style="color: #666;">Email взят из вашего профиля</small>
-            @else
-                <input type="email" name="email" value="{{ old('email', $userData['email'] ?? '') }}" required>
+        <div class="registration-nav-links">
+            <a href="/consultations" class="registration-btn btn-secondary">Все консультации</a>
+            <a href="/my-registrations" class="registration-btn btn-success">Мои записи</a>
+            @if(Auth::user()->isAdmin())
+                <a href="/admin" class="registration-btn btn-danger">Админпанель</a>
             @endif
-            @error('email') <div class="text-danger">{{ $message }}</div> @enderror
+            <a href="{{ route('logout') }}" class="registration-btn btn-danger" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                Выйти
+            </a>
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                @csrf
+            </form>
         </div>
         
-        <div class="form-group">
-            <label>Телефон *</label>
-            <input type="tel" name="phone" 
-                   id="phoneInput"
-                   placeholder="+7(___)___-__-__"
-                   value="{{ old('phone', $userData['phone'] ?? '') }}" 
-                   required
-                   data-pattern="\+7\(\d{3}\)\d{3}-\d{2}-\d{2}">
-            <div class="small-text">Формат: +7(912)345-67-89</div>
-            @error('phone') <div class="text-danger">{{ $message }}</div> @enderror
+        @if(Auth::check())
+            <div class="registration-message message-success">
+                ✅ Вы авторизованы как <strong>{{ Auth::user()->email }}</strong>. Email будет автоматически использован для записи.
+            </div>
+        @endif
+        
+        <div class="consultation-info-container">
+            <h2>{{ $consultation->title }}</h2>
+            <div class="consultation-details-info">
+                <div class="detail-item-info">
+                    <strong>Время:</strong> 
+                    @if($consultation->start_time instanceof \Carbon\Carbon)
+                        {{ $consultation->start_time->format('d.m.Y H:i') }}
+                    @else
+                        {{ date('d.m.Y H:i', strtotime($consultation->start_time)) }}
+                    @endif
+                </div>
+                <div class="detail-item-info">
+                    <strong>Осталось мест:</strong> {{ $consultation->availableSlots() }}
+                </div>
+                <div class="detail-item-info">
+                    <strong>Тип:</strong> {{ $consultation->type == 'individual' ? 'Индивидуальная' : 'Групповая' }}
+                </div>
+                <div class="detail-item-info">
+                    <strong>Формат:</strong> {{ $consultation->format == 'online' ? 'Онлайн' : 'Очно' }}
+                </div>
+            </div>
         </div>
         
-        <div class="form-group form-note">
-            Поля, отмеченные * обязательны для заполнения
+        @if ($errors->any())
+            <div class="registration-message message-error">
+                <h4 style="margin-top: 0;">Ошибки валидации:</h4>
+                <ul style="margin: 10px 0 0 20px;">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+        
+        <div class="registration-form-container">
+            <form method="POST" action="/registration" id="registrationForm">
+                @csrf
+                <input type="hidden" name="consultation_id" value="{{ $consultation->id }}">
+                
+                <div class="form-group">
+                    <label for="first_name">Имя *</label>
+                    <input type="text" id="first_name" name="first_name" 
+                           value="{{ old('first_name', $userData['first_name'] ?? '') }}" 
+                           pattern="[a-zA-Zа-яА-ЯёЁ\s\-]+"
+                           title="Только буквы, пробелы и дефисы"
+                           required>
+                    <div class="form-hint">Только буквы, пробелы и дефисы</div>
+                    @error('first_name') <div class="validation-error">{{ $message }}</div> @enderror
+                </div>
+                
+                <div class="form-group">
+                    <label for="last_name">Фамилия *</label>
+                    <input type="text" id="last_name" name="last_name" 
+                           value="{{ old('last_name', $userData['last_name'] ?? '') }}" 
+                           pattern="[a-zA-Zа-яА-ЯёЁ\s\-]+"
+                           title="Только буквы, пробелы и дефисы"
+                           required>
+                    <div class="form-hint">Только буквы, пробелы и дефисы</div>
+                    @error('last_name') <div class="validation-error">{{ $message }}</div> @enderror
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email *</label>
+                    @if(Auth::check())
+                        <input type="email" id="email" name="email" value="{{ Auth::user()->email }}" readonly required>
+                        <div class="form-hint">Email взят из вашего профиля</div>
+                    @else
+                        <input type="email" id="email" name="email" value="{{ old('email', $userData['email'] ?? '') }}" required>
+                    @endif
+                    @error('email') <div class="validation-error">{{ $message }}</div> @enderror
+                </div>
+                
+                <div class="form-group">
+                    <label for="phone">Телефон *</label>
+                    <input type="tel" id="phone" name="phone"
+                           placeholder="+7(___)___-__-__"
+                           value="{{ old('phone', $userData['phone'] ?? '') }}" 
+                           required
+                           data-pattern="\+7\(\d{3}\)\d{3}-\d{2}-\d{2}">
+                    <div class="form-hint">Формат: +7(912)345-67-89</div>
+                    @error('phone') <div class="validation-error">{{ $message }}</div> @enderror
+                </div>
+                
+                <div class="form-note">
+                    Поля, отмеченные * обязательны для заполнения
+                </div>
+                
+                <div style="display: flex; gap: 15px; margin-top: 25px;">
+                    <button type="submit" class="registration-btn btn-primary">Записаться на консультацию</button>
+                    <a href="/consultations" class="registration-btn btn-secondary">Отмена</a>
+                </div>
+            </form>
         </div>
         
-        <button type="submit" class="btn">Записаться</button>
-        <a href="/consultations" style="margin-left: 10px;">Отмена</a>
-    </form>
+        @if(!Auth::check())
+            <div class="registration-message message-info">
+                <p style="margin: 0;">
+                    <strong>💡 Совет:</strong> 
+                    <a href="{{ route('login') }}">Войдите в систему</a>, чтобы ваш email автоматически заполнялся в форме.
+                </p>
+            </div>
+        @endif
+    </div>
     
-    @if(!Auth::check())
-        <div style="margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 4px;">
-            <p style="margin: 0; font-size: 14px;">
-                <strong>💡 Совет:</strong> 
-                <a href="{{ route('login') }}">Войдите в систему</a>, чтобы ваш email автоматически заполнялся в форме.
-            </p>
-        </div>
-    @endif
-
     <script>
         // Маска для телефона
-        document.getElementById('phoneInput').addEventListener('input', function(e) {
+        document.getElementById('phone').addEventListener('input', function(e) {
             let input = e.target;
             let value = input.value.replace(/\D/g, ''); 
             
@@ -149,7 +180,7 @@
         });
         
         // Разрешаем только цифры и управляющие клавиши
-        document.getElementById('phoneInput').addEventListener('keydown', function(e) {
+        document.getElementById('phone').addEventListener('keydown', function(e) {
             const allowedKeys = [
                 8,  // backspace
                 9,  // tab
@@ -176,7 +207,7 @@
         });
         
         // Фокус на поле телефона, если пустое, показываем шаблон
-        document.getElementById('phoneInput').addEventListener('focus', function(e) {
+        document.getElementById('phone').addEventListener('focus', function(e) {
             if (!this.value) {
                 this.value = '+7(';
                 this.setSelectionRange(3, 3);
@@ -185,7 +216,7 @@
         
         // Предотвращаем отправку формы
         document.getElementById('registrationForm').addEventListener('submit', function(e) {
-            const phoneInput = document.getElementById('phoneInput');
+            const phoneInput = document.getElementById('phone');
             const phonePattern = phoneInput.getAttribute('data-pattern');
             const regex = new RegExp('^' + phonePattern + '$');
             

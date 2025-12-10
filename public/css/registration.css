@@ -1,0 +1,426 @@
+/* Стили для страниц регистрации и моих записей */
+
+/* Общие стили */
+.registration-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Заголовок */
+.registration-header {
+    background: linear-gradient(135deg, #0c2461, #1e3799);
+    padding: 20px 30px;
+    border-radius: 12px;
+    margin-bottom: 25px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    color: white;
+}
+
+.registration-header .logo {
+    height: 70px;
+    width: auto;
+    flex-shrink: 0;
+    filter: brightness(1.1) drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+}
+
+.registration-header-content {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    flex: 1;
+}
+
+.registration-header-content h1 {
+    margin: 0;
+    font-size: 26px;
+    font-weight: 700;
+    color: white;
+    line-height: 1.2;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+}
+
+.registration-header-content .subtitle {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.9);
+    line-height: 1.4;
+}
+
+/* Навигационные ссылки */
+.registration-nav-links {
+    background: white;
+    padding: 15px 20px;
+    border-radius: 10px;
+    margin-bottom: 25px;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    border: 1px solid #eaeaea;
+}
+
+.registration-nav-links a {
+    color: #2c3e50;
+    text-decoration: none;
+    padding: 10px 18px;
+    border-radius: 6px;
+    transition: all 0.3s;
+    font-weight: 500;
+    border: 1px solid transparent;
+    font-size: 14px;
+}
+
+.registration-nav-links a:hover {
+    background: #f8f9fa;
+    border-color: #3498db;
+}
+
+/* Контейнер консультации */
+.consultation-info-container {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    border: 1px solid #eaeaea;
+}
+
+.consultation-info-container h2 {
+    margin: 0 0 20px 0;
+    color: #2c3e50;
+    font-size: 22px;
+    font-weight: 600;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #3498db;
+}
+
+/* Детали консультации */
+.consultation-details-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 12px;
+    margin: 20px 0;
+}
+
+.detail-item-info {
+    background: #f8f9fa;
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-size: 14px;
+    border: 1px solid #eee;
+}
+
+.detail-item-info strong {
+    color: #2c3e50;
+    font-weight: 600;
+    margin-right: 5px;
+}
+
+/* Форма регистрации */
+.registration-form-container {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    border: 1px solid #eaeaea;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #2c3e50;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: border-color 0.3s;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+
+.form-group input[readonly] {
+    background: #f8f9fa;
+    color: #666;
+    cursor: not-allowed;
+}
+
+/* Информационные сообщения */
+.registration-message {
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border-left: 4px solid;
+}
+
+.message-success {
+    background: #d4edda;
+    color: #155724;
+    border-left-color: #27ae60;
+}
+
+.message-info {
+    background: #d1ecf1;
+    color: #0c5460;
+    border-left-color: #3498db;
+}
+
+.message-error {
+    background: #f8d7da;
+    color: #721c24;
+    border-left-color: #e74c3c;
+}
+
+/* Ошибки валидации */
+.validation-error {
+    color: #e74c3c;
+    font-size: 13px;
+    margin-top: 5px;
+}
+
+.text-danger {
+    color: #e74c3c;
+}
+
+/* Подсказки */
+.form-hint {
+    font-size: 12px;
+    color: #7f8c8d;
+    margin-top: 5px;
+}
+
+.form-note {
+    font-size: 13px;
+    color: #7f8c8d;
+    font-style: italic;
+    margin: 20px 0;
+    padding: 10px 15px;
+    background: #f8f9fa;
+    border-radius: 6px;
+}
+
+/* Кнопки */
+.registration-btn {
+    padding: 12px 25px;
+    font-size: 14px;
+    border-radius: 6px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: white;
+    font-weight: 500;
+}
+
+.btn-primary {
+    background: #3498db;
+    border-color: #3498db;
+}
+
+.btn-primary:hover {
+    background: #2980b9;
+    border-color: #2980b9;
+}
+
+.btn-success {
+    background: #27ae60;
+    border-color: #27ae60;
+}
+
+.btn-success:hover {
+    background: #229954;
+    border-color: #229954;
+}
+
+.btn-danger {
+    background: #e74c3c;
+    border-color: #e74c3c;
+}
+
+.btn-danger:hover {
+    background: #c0392b;
+    border-color: #c0392b;
+}
+
+.btn-secondary {
+    background: #95a5a6;
+    border-color: #95a5a6;
+}
+
+.btn-secondary:hover {
+    background: #7f8c8d;
+    border-color: #7f8c8d;
+}
+
+.btn-warning {
+    background: #f39c12;
+    border-color: #f39c12;
+}
+
+.btn-warning:hover {
+    background: #e67e22;
+    border-color: #e67e22;
+}
+
+.btn-link {
+    background: transparent;
+    color: #3498db;
+    border: 1px solid transparent;
+}
+
+.btn-link:hover {
+    text-decoration: underline;
+    background: transparent;
+}
+
+/* Список моих записей */
+.registrations-list-container {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    border: 1px solid #eaeaea;
+}
+
+.registration-item {
+    border: 1px solid #eaeaea;
+    padding: 20px;
+    margin: 15px 0;
+    border-radius: 8px;
+    transition: all 0.3s;
+}
+
+.registration-item:hover {
+    background: #f9f9f9;
+    border-color: #3498db;
+}
+
+.registration-item h3 {
+    margin: 0 0 15px 0;
+    color: #2c3e50;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.registration-item-details {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 10px;
+    margin: 15px 0;
+}
+
+/* Пустое состояние */
+.empty-registrations {
+    text-align: center;
+    padding: 50px 30px;
+    color: #7f8c8d;
+    background: #f9f9f9;
+    border-radius: 10px;
+    border: 2px dashed #ddd;
+    margin: 30px 0;
+}
+
+.empty-registrations h3 {
+    color: #95a5a6;
+    margin-bottom: 15px;
+    font-size: 20px;
+}
+
+.empty-registrations p {
+    margin-bottom: 20px;
+    font-size: 16px;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .registration-container {
+        padding: 15px;
+    }
+    
+    .registration-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+        padding: 20px;
+    }
+    
+    .registration-header .logo {
+        height: 60px;
+        margin: 0 auto;
+    }
+    
+    .registration-header-content h1 {
+        font-size: 22px;
+    }
+    
+    .registration-header-content .subtitle {
+        font-size: 15px;
+    }
+    
+    .consultation-details-info {
+        grid-template-columns: 1fr;
+    }
+    
+    .registration-nav-links {
+        justify-content: center;
+    }
+    
+    .registration-item-details {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .registration-container {
+        padding: 10px;
+    }
+    
+    .registration-header-content h1 {
+        font-size: 20px;
+    }
+    
+    .consultation-info-container,
+    .registration-form-container,
+    .registrations-list-container {
+        padding: 20px;
+    }
+    
+    .registration-nav-links {
+        padding: 12px;
+    }
+    
+    .registration-nav-links a {
+        width: 100%;
+        text-align: center;
+        margin-bottom: 5px;
+    }
+    
+    .registration-btn {
+        width: 100%;
+        justify-content: center;
+        margin-bottom: 10px;
+    }
+}
