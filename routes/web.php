@@ -230,6 +230,11 @@ Route::middleware(['auth'])->group(function () {
         })->name('admin.consultation.delete');
     });
 });
+Route::get('/admin/consultation/{id}/export', [AdminController::class, 'exportConsultationRegistrations'])
+    ->name('admin.consultation.export');
+    
+Route::get('/admin/consultation/{id}/export-simple', [AdminController::class, 'exportConsultationSimple'])
+    ->name('admin.consultation.export.simple');
 
 // API (публичное) - по заданию должно быть доступно внешним сервисам
 Route::get('/api/consultations', [RegistrationController::class, 'apiIndex']);
